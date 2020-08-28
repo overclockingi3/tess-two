@@ -41,7 +41,22 @@ The `tess-two-test` module contains instrumented unit tests for tess-two.
 copied to the Android device in a subdirectory named `tessdata`.
 
 ## Usage
-
+```
+TessBaseAPI mTess = new TessBaseAPI();
+//存放tessdata文件夹的路径,chi_sim.traineddata文件的位置必须存放在tessdata文件夹中
+File dir = new File(getExternalFilesDir(null).getPath());
+if (dir.exists()) {
+    //选择语言 chi_sim 简体中文  eng 英文
+    mTess.init(dir.getPath(), "eng");
+    //将图片设置到mTess进行识别
+    mTess.setImage(BitmapFactory.decodeResource(getResources(), R.mipmap.test));
+    //获取识别的文字（这里会等一段时间，这里的代码是在主线程的，建议将这部分代码放到子线程）
+    String result = mTess.getUTF8Text();
+    if (!TextUtils.isEmpty(result)) {
+        Log.i(result);
+    }
+}
+```
 To use tess-two from your app, edit your app module's `build.gradle` file to add 
 tess-two as an external dependency:
 
